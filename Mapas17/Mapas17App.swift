@@ -9,11 +9,12 @@ import SwiftUI
 
 @main
 struct Mapas17App: App {
-    //Vid 456
+    //V-456,paso 1.9
     @State private var mapa = MapViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()
+            //Paso 1.10
                 .environment(mapa)
         }
     }

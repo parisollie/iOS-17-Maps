@@ -8,39 +8,41 @@
 import SwiftUI
 import MapKit
 struct LocationView: View {
-    //Vid 459
+    //V-459, paso 1.25
     @Binding var markerSelection : MKMapItem?
     @Binding var showLocation : Bool
-    //Vid 460
+    //V-460, paso 1.31
     @State private var lookAroundScene: MKLookAroundScene?
-    //Vid 462
+    //V-462, paso 1.38
     @Binding var getDirections : Bool
     
     var body: some View {
         VStack{
-            
+            //Paso 1.26
             Text(markerSelection?.placemark.name ?? "")
                 .font(.title)
                 .bold()
                 .padding(.top, 10)
             
+            //Paso 1.27
             Text(markerSelection?.placemark.title ?? "")
                 .font(.footnote)
                 .bold()
                 .foregroundStyle(.gray)
                 .lineLimit(2)
                 .padding(.trailing)
-            //Vid 460
+            
+            //Paso 1.32
             if let scene = lookAroundScene {
                 LookAroundPreview(initialScene: scene)
                     .frame(height: 200)
                     .cornerRadius(12)
                     .padding(.all)
             }else{
-                //Vid 462
+                //V-462,paso 1.46
                 ContentUnavailableView("Sin vista previa", systemImage: "eye.slash")
             }
-            //Vid 462
+            //V-462,paso 1.37
             HStack(spacing: 30){
                 Button {
                     //si esta true
@@ -54,7 +56,7 @@ struct LocationView: View {
                     .tint(.blue)
                 
                 Button {
-                    //Vid 462
+                    //Paso 1.39
                     getDirections = true
                     showLocation = false
                 } label: {
@@ -66,7 +68,7 @@ struct LocationView: View {
             
             
         }.padding(.all)
-        //Vid 460
+        //Paso 1.34
             .onAppear{
                 fetchAroundPreview()
             }
@@ -76,7 +78,7 @@ struct LocationView: View {
     }
 }
 
-//Vid 460
+//Paso 1.33
 extension LocationView {
     func fetchAroundPreview(){
         if let markerSelection {

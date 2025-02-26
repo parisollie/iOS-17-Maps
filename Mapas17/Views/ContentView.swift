@@ -8,43 +8,51 @@
 import SwiftUI
 import MapKit
 struct ContentView: View {
-    //Vid 454, con automatico nos da nuestra ubicacion.
-    //@State private var cameraPosition: MapCameraPosition = .automatic
+    /*Paso 1.2, con automatic nos da nuestra ubicacion.
+    @State private var cameraPosition: MapCameraPosition = .automatic
+    @State private var cameraPosition: MapCameraPosition = .region(.userRegion)*/
+    //V-456 Paso 1.11
     @Environment(MapViewModel.self) var mapModel
-    //Vid 457
+    
+    //V-457,Paso 1.15
     @State private var showSearch = true
     
     var body: some View {
-        //Vid 456
+        //Paso 1.12
         @Bindable var mapModel = mapModel
-        //Vid 454
-        //Vid 459,add selection: $mapModel.markerSelection
+        /*
+         Paso 1.3
+         Paso 1.13, ponemos $mapModel.cameraPosition
+         Vid 459,paso 1.28 add selection: $mapModel.markerSelection
+         */
         Map(position: $mapModel.cameraPosition, selection: $mapModel.markerSelection){
-            //Vid 455, marcadores
-            Marker("Mi Ubicacion", systemImage: "house", coordinate: .userLocation)
+            //V-455,Paso 1.5 marcadores
+           Marker("Mi Ubicacion", systemImage: "house", coordinate: .userLocation)
                 .tint(.blue)
-            //Vid 458
+            
+            //V-458,Paso 1.22
             ForEach(mapModel.results, id:\.self){ item in
+                //Paso 1.42
                 if mapModel.routeDisplay {
-                    //Vid 462, si existe muestrame el destino
+                    //Paso 1.43, si existe muestrame el destino
                     if item == mapModel.routeDestination {
+                        //Paso 1.23
                         let placemark = item.placemark
                         Marker(placemark.title ?? "", coordinate: placemark.coordinate)
                     }
                 }else{
-                    //Vid 458
                     let placemark = item.placemark
                     Marker(placemark.title ?? "", coordinate: placemark.coordinate)
                 }
                     
             }
-            //Vid 462
+            //V-462,paso 1.40
             if let route = mapModel.route {
                 MapPolyline(route.polyline)
                 //que tan gruesa queremos la línea
                     .stroke(.blue, lineWidth: 6)
             }
-            //Vid 457
+            //Paso 1.18
         }.overlay(alignment: .topLeading){
             VStack{
                 Button {
@@ -62,14 +70,16 @@ struct ContentView: View {
         //Vid 462
         .onChange(of: mapModel.getDirections, { oldValue, newValue in
             if newValue {
+                //Paso 1.41
                 mapModel.fetchRoute()
             }
         })
+        //paso 1.30
         .onChange(of: mapModel.markerSelection, { oldValue, newValue in
-            //Vid 459
+            //En caso de elegir varios y seleccionar varios
             mapModel.showLocation = newValue != nil
         })
-        //Vid 457
+        //Paso 1.17
         .sheet(isPresented: $showSearch, content: {
             SheetSearch(showSearch: $showSearch)
                 .interactiveDismissDisabled()
@@ -77,16 +87,16 @@ struct ContentView: View {
                 .presentationCornerRadius(15)
                 .presentationBackground(.ultraThinMaterial)
         })
-        //Vid 459
+        //Paso 1.29
         .sheet(isPresented: $mapModel.showLocation, content: {
-            //Vid 462 add  getDirections:
+            //Paso 1.44 add  getDirections:
             LocationView(markerSelection: $mapModel.markerSelection, showLocation: $mapModel.showLocation, getDirections: $mapModel.getDirections)
                 .presentationDetents([.height(350)])
                 .presentationBackgroundInteraction(.enabled(upThrough: .height(350)))
                 .presentationCornerRadius(15)
                 .presentationBackground(.ultraThinMaterial)
         })
-        //Vid 456
+        //V-456 Paso 1.7
         .mapControls{
             //Brujúla
             MapCompass()
@@ -98,14 +108,14 @@ struct ContentView: View {
     }
 }
 
-//Vid 454
+//V-454,Paso 1.0
 extension CLLocationCoordinate2D {
     static var userLocation: CLLocationCoordinate2D {
         //Coordenadas de miami
         return .init(latitude: 25.7602, longitude: -80.2369)
     }
 }
-
+//Paso 1.1
 extension MKCoordinateRegion {
     static var userRegion: MKCoordinateRegion {
         return .init(center: .userLocation, latitudinalMeters: 10000, longitudinalMeters: 10000)
@@ -113,10 +123,8 @@ extension MKCoordinateRegion {
 }
 
 
-
-
 /*
- //Vid 455,
+ //Vid 455,Paso 1.6
  Annotation("Mi Ubicacion", coordinate: .userLocation) {
      ZStack{
          Circle()

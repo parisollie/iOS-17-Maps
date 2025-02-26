@@ -8,13 +8,14 @@
 
 import SwiftUI
 
-//Vid 457
+//V-457,paso 1.14
 struct SheetSearch: View {
     
     @Environment(MapViewModel.self) var mapModel
     @Binding var showSearch : Bool
     
     var body: some View {
+        //paso 1.16, ponemos el Bindable
         @Bindable var mapModel = mapModel
         NavigationStack{
             VStack{
@@ -25,11 +26,12 @@ struct SheetSearch: View {
                     .foregroundStyle(.primary)
                 
             }
-            //Vid 458,usa el enter del teclado
+            //V-458,Paso 1.21,usa el enter del teclado
             .onSubmit {
                 //cuando usamos funcion asincrona usamos task
                 Task{
                     await mapModel.searchPlace()
+                    //despues de que se ejecuta que se esconda
                     showSearch = false
                 }
             }
