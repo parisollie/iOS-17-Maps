@@ -89,3 +89,11 @@ extension LocationView {
     }
 }
 
+#Preview {
+    LocationView(
+        markerSelection: .constant(nil),
+        showLocation: .constant(true),
+        getDirections: .constant(false)
+    )
+}
+

@@ -133,3 +133,7 @@ extension MKCoordinateRegion {
  */
 
 
+#Preview {
+    ContentView()
+        .environment(MapViewModel())
+}

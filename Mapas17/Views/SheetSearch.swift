@@ -39,3 +39,9 @@ struct SheetSearch: View {
         }
     }
 }
+
+#Preview {
+    SheetSearch(showSearch: .constant(true))
+        .environment(MapViewModel())
+}
+
